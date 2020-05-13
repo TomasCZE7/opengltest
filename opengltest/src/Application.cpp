@@ -9,6 +9,7 @@
 #include "VertexBufferLayout.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Texture.h"
 
 int main(void){
     GLFWwindow* window;
@@ -33,10 +34,10 @@ int main(void){
         return -1;
 
     float positions[] = {
-        -0.5f, -0.5f,
-         0.5f, -0.5f,
-         0.5f,  0.5f, 
-        -0.5f,  0.5f
+        -0.5f, -0.5f, 0.0f, 0.0f,
+         0.5f, -0.5f, 1.0f, 0.0f,
+         0.5f,  0.5f, 1.0f, 1.0f,
+        -0.5f,  0.5f, 0.0f, 1.0f
     };
 
     unsigned int indicies[] = {
@@ -45,8 +46,9 @@ int main(void){
     };
     {
         VertexArray va;
-        VertexBuffer vb(positions, sizeof(float) * 4 * 2);
+        VertexBuffer vb(positions, sizeof(float) * 4 * 4);
         VertexBufferLayout layout;
+        layout.push<float>(2);
         layout.push<float>(2);
         va.addBuffer(vb, layout);
         IndexBuffer ib(indicies, 6);
@@ -54,6 +56,10 @@ int main(void){
         Shader shader("resources/shader/Basic.shader");
         shader.bind();
         shader.setUniform4f("u_Color", 0.0f, 1.0f, 0.0f, 1.0f);
+
+        Texture dirt("resources/texture/grass_block.jpg");
+        dirt.bind();
+        shader.setUniform1i("textureUniform", 0);
 
         std::cout << glGetString(GL_VERSION) << std::endl;
 
@@ -69,7 +75,7 @@ int main(void){
             renderer.clear();
 
             shader.bind();
-            shader.setUniform4f("u_Color", 0.0f, 1.0f, 0.0f, 1.0f);
+            //shader.setUniform4f("u_Color", 0.0f, 1.0f, 0.0f, 1.0f);
 
             renderer.draw(va, ib, shader);
 
