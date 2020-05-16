@@ -35,6 +35,10 @@ void Shader::setUniform4f(const std::string name, float v0, float v1, float v2, 
     callGL(glUniform4f(getUniformLocation(name), v0, v1, v2, v3));
 }
 
+void Shader::setUniformMatrix4f(const std::string name, glm::mat4 matrix){
+    callGL(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+}
+
 int Shader::getUniformLocation(const std::string& name){
     if (uniformLocations.find(name) != uniformLocations.end())
         return uniformLocations[name];

@@ -5,10 +5,11 @@ layout(location = 0) in vec4 position;
 layout(location = 1) in vec2 texCorinateIn;
 
 out vec2 texCoordinate;
+uniform mat4 modelViewProjectionMatrix;
 
 void main() 
 {
-	gl_Position = position;
+	gl_Position = modelViewProjectionMatrix * position;
 	texCoordinate = texCorinateIn;
 };
 
